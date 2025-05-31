@@ -1,0 +1,21 @@
+name: Build and run tests
+
+on:
+  push:
+
+jobs:
+
+  build_and_run_tests:
+    name: Build and run tests
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Retrieve the sources
+        uses: actions/checkout@v4
+
+      - name: Set up environment
+        uses: ./.github/actions/setup
+
+      - name: build and run tests
+        run: |
+          just run_tests

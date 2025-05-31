@@ -8,11 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.web3j.crypto.Credentials;
-import tech.mogami.commons.util.JsonUtil;
 import tech.mogami.java.client.helper.X402PaymentHelper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static tech.mogami.commons.constant.X402Constants.X402_X_PAYMENT_HEADER;
 import static tech.mogami.commons.test.BaseTestData.TEST_CLIENT_WALLET_ADDRESS_1;
@@ -30,7 +28,6 @@ public class IntegrationTest {
     @DisplayName("Get payment requirements and pay for it")
     void integration() throws Exception {
         MvcResult result = mockMvc.perform(get("/weather"))
-                .andDo(print())
                 .andExpect(status().isPaymentRequired())
                 .andReturn();
 
@@ -49,11 +46,9 @@ public class IntegrationTest {
                 Credentials.create(TEST_CLIENT_WALLET_ADDRESS_1_PRIVATE_KEY),
                 paymentRequired.accepts().getFirst(),
                 paymentPayload);
-        System.out.println("Signed payload: " + JsonUtil.toJson(signedPayload));
 
         mockMvc.perform(get("/weather")
-                        .header(X402_X_PAYMENT_HEADER, X402PaymentHelper.getPayloadHeader(signedPayload)))
-                .andDo(print());
+                .header(X402_X_PAYMENT_HEADER, X402PaymentHelper.getPayloadHeader(signedPayload)));
     }
 
 }
