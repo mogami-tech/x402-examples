@@ -1,5 +1,6 @@
 package tech.mogami.spring.example;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -11,10 +12,11 @@ public class Application {
 
     /**
      * Main method to start the Spring Boot application.
+     *
      * @param args command line arguments
      */
     public static void main(final String[] args) {
-        org.springframework.boot.SpringApplication.run(Application.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }
