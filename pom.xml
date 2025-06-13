@@ -35,12 +35,12 @@
         <dependency>
             <groupId>tech.mogami.spring</groupId>
             <artifactId>mogami-x402-spring-boot-starter</artifactId>
-            <version>0.1.4-SNAPSHOT</version>
+            <version>0.1.4</version>
         </dependency>
         <dependency>
             <groupId>tech.mogami.java.client</groupId>
             <artifactId>mogami-x402-java-client</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>0.1.1</version>
         </dependency>
 
         <!-- Tests -->
