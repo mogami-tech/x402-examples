@@ -7,6 +7,11 @@ import tech.mogami.spring.autoconfigure.annotation.X402PaymentRequirements;
 @RestController
 public class WeatherController {
 
+    @GetMapping("/freeWeather")
+    public WeatherResponse freeWeather() {
+        return new WeatherResponse(new WeatherResponse.Report("rainy", 25));
+    }
+
     @X402PaymentRequirements(
             scheme = "exact",
             network = "base-sepolia",
