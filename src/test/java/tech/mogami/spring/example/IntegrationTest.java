@@ -47,8 +47,12 @@ public class IntegrationTest {
                 paymentRequired.accepts().getFirst(),
                 paymentPayload);
 
+        // Perform the request with the signed payment payload in the header.
         mockMvc.perform(get("/weather")
                 .header(X402_X_PAYMENT_HEADER, X402PaymentHelper.getPayloadHeader(signedPayload)));
+
+        // Display nonce
+        System.out.println("Payment nonce: " + signedPayload.getNonce().orElse("N/A"));
     }
 
 }
