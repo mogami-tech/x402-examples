@@ -8,3 +8,14 @@ run_application:
 # Docker ===============================================================================================================
 build_docker_image:
     mvn spring-boot:build-image -P release
+
+# Release ==============================================================================================================
+start_release:
+    git remote set-url origin git@github.com:mogami-tech/x402-examples .git
+    git checkout development
+    git pull
+    git status
+    mvn gitflow:release-start
+
+finish_release:
+    mvn gitflow:release-finish -DskipTests
