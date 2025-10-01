@@ -1,0 +1,40 @@
+name: Deploy docker image to DigitalOcean
+
+on:
+  push:
+    tags: [ '*' ]
+
+jobs:
+
+  release:
+    name: Deploy docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Retrieve the sources
+        uses: actions/checkout@v5
+
+      - name: Set up environment
+        uses: ./.github/actions/setup
+
+      - name: Get release number
+        id: release
+        run: echo "version=$(mvn help:evaluate -D expression=project.version -q -D forceStdout)" >> $GITHUB_OUTPUT
+
+      - name: Build image and run tests
+        run: |
+          just build_docker_image
+
+      # Deploy to Digital Ocean container registry =====================================================================
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2.5.1
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Authenticate to DigitalOcean registry
+        run: doctl registry login --expiry-seconds 3600
+
+      - name: Tag and push docker image to DigitalOcean registry
+        run: |
+          docker tag mogamitech/facilitator:latest registry.digitalocean.com/mogamitech/examples:production
+          docker push registry.digitalocean.com/mogamitech/examples:production
