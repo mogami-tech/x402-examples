@@ -29,10 +29,31 @@
         <maven.compiler.source>21</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Mogami -->
+        <mogami.commons.version>0.0.9-SNAPSHOT</mogami.commons.version>
+        <mogami.java-client.version>0.1.3</mogami.java-client.version>
+        <mogami.spring-boot-starter.version>0.1.7</mogami.spring-boot-starter.version>
+
+        <!-- Spring -->
         <spring-boot.version>3.5.6</spring-boot.version>
         <springdoc.version>2.8.13</springdoc.version>
-        <maven.maven-deploy-plugin.version>3.1.4</maven.maven-deploy-plugin.version>
+
+        <!-- Maven plugins -->
+        <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
+        <maven.puppycrawl.checkstyle.version>11.1.0</maven.puppycrawl.checkstyle.version>
+        <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
+        <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
+        <maven.surefire-junit5-tree-reporter.version>1.4.0</maven.surefire-junit5-tree-reporter.version>
+        <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
+        <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
+        <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
+        <maven.archetype-packaging.version>3.2.1</maven.archetype-packaging.version>
         <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
+        <maven.gpg-plugin.version>3.2.8</maven.gpg-plugin.version>
+        <maven.deploy-plugin.version>3.1.4</maven.deploy-plugin.version>
+        <maven.central-publishing-maven-plugin.version>0.9.0</maven.central-publishing-maven-plugin.version>
     </properties>
     <!-- =========================================================================================================== -->
 
@@ -42,17 +63,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>tech.mogami.spring</groupId>
             <artifactId>mogami-x402-spring-boot-starter</artifactId>
-            <version>0.1.7</version>
+            <version>${mogami.spring-boot-starter.version}</version>
         </dependency>
         <dependency>
             <groupId>tech.mogami.java.client</groupId>
             <artifactId>mogami-x402-java-client</artifactId>
-            <version>0.1.3</version>
+            <version>${mogami.java-client.version}</version>
         </dependency>
 
         <dependency>
@@ -64,7 +84,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>3.5.6</version>
         </dependency>
 
         <!-- Tests -->
@@ -72,7 +91,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <version>${spring-boot.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>
@@ -81,6 +99,21 @@
             </exclusions>
         </dependency>
     </dependencies>
+    <!-- =========================================================================================================== -->
+
+    <!-- =========================================================================================================== -->
+    <!-- Dependency management -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <!-- =========================================================================================================== -->
 
     <!-- =========================================================================================================== -->
