@@ -10,6 +10,15 @@
     <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Mogami x402 examples</name>
+    <description>Learn x402 through real-world demos of paywalled endpoints and instant payment flows</description>
+    <url>https://github.com/mogami-tech/x402-examples</url>
+    <licenses>
+        <license>
+            <name>GNU Affero General Public License v3.0</name>
+            <url>https://github.com/mogami-tech/x402-examples/blob/development/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
     <!-- =========================================================================================================== -->
 
     <!-- =========================================================================================================== -->
@@ -57,7 +66,6 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
             <version>3.5.6</version>
         </dependency>
-
 
         <!-- Tests -->
         <dependency>
