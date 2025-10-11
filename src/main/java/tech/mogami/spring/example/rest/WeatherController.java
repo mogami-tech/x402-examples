@@ -8,7 +8,8 @@ import tech.mogami.spring.annotation.X402PaymentRequirements;
 public class WeatherController {
 
     @GetMapping("/freeWeather")
-    public WeatherResponse freeWeather() {
+    @SuppressWarnings("checkstyle:MagicNumber")
+    public final WeatherResponse freeWeather() {
         return new WeatherResponse(new WeatherResponse.Report("rainy", 25));
     }
 
@@ -24,7 +25,8 @@ public class WeatherController {
             }
     )
     @GetMapping("/weather")
-    public WeatherResponse weather() {
+    @SuppressWarnings("checkstyle:MagicNumber")
+    public final WeatherResponse weather() {
         return new WeatherResponse(new WeatherResponse.Report("sunny", 25));
     }
 

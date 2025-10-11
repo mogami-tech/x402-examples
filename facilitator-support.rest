@@ -1,1 +1,1 @@
-GET http://localhost:8080/supported
+GET http://localhost:4020/supported
