@@ -5,17 +5,20 @@
     <a href="https://x.com/mogami_tech">Twitter</a>
 </p>
 
-<p align="center">
-    <a href="https://mogami.gitbook.io/mogami">
-        <img    src="https://mogami.tech/images/logo/logo_mogami_vertical_small.png"
-                alt="Mogami logo"/>
-    </a>
+<p>
+  <a href="https://mogami.tech">
+    <img 
+      src="https://mogami.tech/images/logo/logo_mogami_vertical_small.png" 
+      alt="Mogami logo" 
+      width="120"
+    />
+  </a>
 </p>
 
-<h3 align="center">x402 Examples.</h2>
-
-In this project, you will find examples of how to use the Mogami framework to build applications. The examples are
-designed to be simple and easy to understand, so you can quickly get started with Mogami.
+<h3 align="center">Mogami x402 Examples.</h2>
+<p>
+    Our examples showcase real-world x402 payment flows you can run and adapt instantly. From protecting endpoints with paywalls to demonstrating full transaction lifecycles, they’re designed to teach by doing. Each example comes with ready-to-use code so you can explore, learn, and integrate x402 in minutes.
+</p>
 
 | Example                                                         | Path           |
 |-----------------------------------------------------------------|----------------|

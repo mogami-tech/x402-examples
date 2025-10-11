@@ -52,7 +52,13 @@ public class IntegrationTest {
                 .header(X402_X_PAYMENT_HEADER, X402PaymentHelper.getPayloadHeader(signedPayload)));
 
         // Display nonce
-        System.out.println("Payment nonce: " + signedPayload.getNonce().orElse("N/A"));
+        var nonce = signedPayload.getNonce();
+        if (nonce.isEmpty()) {
+            System.err.println("No nonce payment");
+        } else {
+            System.out.println("Payment nonce: " + nonce.get());
+            System.out.println("View your payment at: https://console.mogami.tech/payments/by-nonce/" + nonce.get());
+        }
     }
 
 }

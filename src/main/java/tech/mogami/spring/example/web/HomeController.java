@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * HomeController is the controller for the home page of the Mogami Facilitator web application.
+ * HomeController is the controller for the home page of the examples web application.
  */
 @Controller
 public class HomeController {

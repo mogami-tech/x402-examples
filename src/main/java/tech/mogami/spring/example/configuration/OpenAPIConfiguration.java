@@ -18,8 +18,7 @@ public class OpenAPIConfiguration {
      */
     @Bean
     public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info().title("Mogami playground API"));
+        return new OpenAPI().info(new Info().title("Mogami playground API"));
     }
 
 }
