@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.mogami.spring.annotation.X402PaymentRequirements;
 
+import static tech.mogami.commons.constant.network.base.BaseContracts.BASE_MAINNET_USDC_CONTRACT;
+
 @RestController
 @Tag(name = "Tip", description = "TipController provides an endpoint to send tips to the developer (Base mainnet only)")
 public class TipController {
@@ -13,11 +15,11 @@ public class TipController {
     @X402PaymentRequirements(
             scheme = "exact",
             network = "base",
-            maximumAmountRequired = "1",
-            payTo = "0xFE0920A0a7f0f8a1Ec689146c30C3BBef439bF8A",
-            asset = "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+            maximumAmountRequired = "1000000",  // 1 USDC with 6 decimals
+            payTo = "0x2306e12F56e45E698bFAfa9c5E7D4e77cDEb4d06",
+            asset = BASE_MAINNET_USDC_CONTRACT,
             extra = {
-                    @X402PaymentRequirements.ExtraEntry(key = "name", value = "USDC"),
+                    @X402PaymentRequirements.ExtraEntry(key = "name", value = "USD Coin"),
                     @X402PaymentRequirements.ExtraEntry(key = "version", value = "2")
             }
     )
