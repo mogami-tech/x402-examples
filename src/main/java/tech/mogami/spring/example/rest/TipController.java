@@ -15,7 +15,7 @@ public class TipController {
     @X402PaymentRequirements(
             scheme = "exact",
             network = "base",
-            maximumAmountRequired = "1000000",  // 1 USDC with 6 decimals
+            maximumAmountRequired = "10000",  // 0.1 USDC (6 decimals)/
             payTo = "0x2306e12F56e45E698bFAfa9c5E7D4e77cDEb4d06",
             asset = BASE_MAINNET_USDC_CONTRACT,
             extra = {

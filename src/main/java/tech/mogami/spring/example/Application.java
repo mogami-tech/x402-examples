@@ -42,7 +42,7 @@ public class Application {
     @Bean
     CommandLineRunner init() {
         return args -> {
-            final String tipUrl = "http://localhost:4021/tip";
+            final String tipUrl = StringUtils.firstNonBlank(System.getenv("TIP_URL"), "http://localhost:4021/tip");
             final String tipPrivateKey = System.getenv("TIP_PRIVATE_KEY");
 
             if (StringUtils.isNotBlank(tipPrivateKey)) {
