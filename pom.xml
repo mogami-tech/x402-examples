@@ -6,7 +6,7 @@
     <!-- Project information ======================================================================================= -->
     <groupId>tech.mogami.spring</groupId>
     <artifactId>x402-example-server</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>Mogami x402 examples</name>
     <description>Learn x402 through real-world demos of paywalled endpoints and instant payment flows</description>
@@ -29,8 +29,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Mogami -->
-        <mogami.java-client.version>1.0.0</mogami.java-client.version>
-        <mogami.spring-boot-starter.version>1.0.0</mogami.spring-boot-starter.version>
+        <mogami.java-client.version>1.0.1</mogami.java-client.version>
+        <mogami.spring-boot-starter.version>1.0.1</mogami.spring-boot-starter.version>
 
         <!-- Spring -->
         <spring-boot.version>3.5.6</spring-boot.version>
@@ -38,7 +38,7 @@
 
         <!-- Maven plugins -->
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
-        <maven.puppycrawl.checkstyle.version>11.1.0</maven.puppycrawl.checkstyle.version>
+        <maven.puppycrawl.checkstyle.version>12.0.1</maven.puppycrawl.checkstyle.version>
         <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
@@ -87,7 +87,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>

@@ -3,6 +3,12 @@ run_tests:
     mvn clean install
 
 run_application:
+    mvn spring-boot:run
+
+run_tests_local_facilitator:
+    mvn clean install -Dspring.profiles.active=development
+
+run_application_local_facilitator:
     mvn spring-boot:run -Dspring-boot.run.profiles=development
 
 # Docker ===============================================================================================================
