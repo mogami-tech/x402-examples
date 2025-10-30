@@ -29,8 +29,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Mogami -->
-        <mogami.java-client.version>1.1.0</mogami.java-client.version>
-        <mogami.spring-boot-starter.version>1.1.0</mogami.spring-boot-starter.version>
+        <mogami.java-client.version>1.1.1-SNAPSHOT</mogami.java-client.version>
+        <mogami.spring-boot-starter.version>1.1.1-SNAPSHOT</mogami.spring-boot-starter.version>
 
         <!-- Spring -->
         <spring-boot.version>3.5.6</spring-boot.version>

@@ -10,6 +10,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.web3j.crypto.Credentials;
 import tech.mogami.java.client.helper.X402PaymentHelper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static tech.mogami.commons.constant.X402Constants.X402_X_PAYMENT_HEADER;
@@ -47,10 +49,6 @@ public class IntegrationTest {
                 paymentRequired.accepts().getFirst(),
                 paymentPayload);
 
-        // Perform the request with the signed payment payload in the header.
-        mockMvc.perform(get("/weather")
-                .header(X402_X_PAYMENT_HEADER, X402PaymentHelper.getPayloadHeader(signedPayload)));
-
         // Display nonce
         var nonce = signedPayload.getNonce();
         if (nonce.isEmpty()) {
@@ -59,6 +57,18 @@ public class IntegrationTest {
             System.out.println("Payment nonce: " + nonce.get());
             System.out.println("View your payment at: https://console.mogami.tech/payments/by-nonce/" + nonce.get());
         }
+
+        // Perform the request with the signed payment payload in the header.
+        var paymentResult = mockMvc.perform(get("/weather")
+                .header(X402_X_PAYMENT_HEADER, X402PaymentHelper.getPayloadHeader(signedPayload))).andReturn();
+
+        // Check that the payment was successful.
+        assertEquals(200, paymentResult.getResponse().getStatus(),
+                "Expected HTTP status 200 after payment, got " + paymentResult.getResponse().getStatus());
+        assertTrue(paymentResult.getResponse().getContentAsString().contains("sunny"),
+                "Expected weather response to contain 'sunny', got: " + paymentResult.getResponse().getContentAsString());
+
+        System.out.println("=> Response after payment: " + paymentResult.getResponse().getContentAsString());
     }
 
 }
