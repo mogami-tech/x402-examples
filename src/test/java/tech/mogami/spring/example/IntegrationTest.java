@@ -49,16 +49,8 @@ public class IntegrationTest {
                 paymentRequired.accepts().getFirst(),
                 paymentPayload);
 
-        // Display nonce
-        var nonce = signedPayload.getNonce();
-        if (nonce.isEmpty()) {
-            System.err.println("No nonce payment");
-        } else {
-            System.out.println("Payment nonce: " + nonce.get());
-            System.out.println("View your payment at: https://console.mogami.tech/payments/by-nonce/" + nonce.get());
-        }
-
         // Perform the request with the signed payment payload in the header.
+        System.out.println("Payment nonce: " + signedPayload.getNonce());
         var paymentResult = mockMvc.perform(get("/weather")
                 .header(X402_X_PAYMENT_HEADER, X402PaymentHelper.getPayloadHeader(signedPayload))).andReturn();
 
