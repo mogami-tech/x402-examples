@@ -17,7 +17,7 @@ public class WeatherController {
         return new WeatherResponse(new WeatherResponse.Report("rainy", 25));
     }
 
-    @X402PayUSDC(amount = "3") // 3 USDC
+    @X402PayUSDC(amount = "0.2") // 0.2 USDC
     @GetMapping("/weather")
     @Operation(summary = "Provides weather information with payment requirements")
     @SuppressWarnings("checkstyle:MagicNumber")

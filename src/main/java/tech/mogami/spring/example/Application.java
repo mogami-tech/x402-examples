@@ -84,14 +84,15 @@ public class Application {
                                     String.class
                             );
 
-                            // Si pas d’erreur, afficher le code et le corps
-                            System.out.println("✅ Status: " + response.getStatusCode());
-                            System.out.println("✅ Body: " + response.getBody());
-                            signedPayload.getNonce().ifPresent(nonce -> {
-                                System.out.println("✅ Payment nonce: " + nonce);
-                                System.out.println("✅ View your payment at: https://console.mogami.tech/payments/by-nonce/" + nonce);
-
-                            });
+                            if (!response.getStatusCode().is2xxSuccessful()) {
+                                System.out.println("⚠️ Unexpected status code after payment: " + response.getStatusCode());
+                            } else {
+                                System.out.println("✅ Status: " + response.getStatusCode());
+                                System.out.println("✅ Body: " + response.getBody());
+                                signedPayload.getNonce().ifPresent(nonce -> {
+                                    System.out.println("✅ Payment nonce: " + nonce);
+                                });
+                            }
                         } catch (HttpClientErrorException httpClientErrorException) {
                             System.out.println("⚠️ HTTP error: " + httpClientErrorException.getStatusCode());
                             System.out.println("⚠️ Response body:");
