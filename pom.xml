@@ -30,7 +30,7 @@
 
         <!-- Mogami -->
         <mogami.java-client.version>1.1.1</mogami.java-client.version>
-        <mogami.spring-boot-starter.version>1.1.1</mogami.spring-boot-starter.version>
+        <mogami.spring-boot-starter.version>1.1.2</mogami.spring-boot-starter.version>
 
         <!-- Spring -->
         <spring-boot.version>3.5.6</spring-boot.version>
