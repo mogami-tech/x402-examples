@@ -89,9 +89,7 @@ public class Application {
                             } else {
                                 System.out.println("✅ Status: " + response.getStatusCode());
                                 System.out.println("✅ Body: " + response.getBody());
-                                signedPayload.getNonce().ifPresent(nonce -> {
-                                    System.out.println("✅ Payment nonce: " + nonce);
-                                });
+                                signedPayload.getNonce().ifPresent(nonce -> System.out.println("✅ Payment nonce: " + nonce));
                             }
                         } catch (HttpClientErrorException httpClientErrorException) {
                             System.out.println("⚠️ HTTP error: " + httpClientErrorException.getStatusCode());
