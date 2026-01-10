@@ -1,21 +1,27 @@
 package tech.mogami.spring.example;
 
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 import org.web3j.crypto.Credentials;
-import tech.mogami.java.client.helper.X402PaymentHelper;
+import tech.mogami.commons.api.facilitator.settle.SettlementResponse;
+import tech.mogami.commons.payment.PaymentPayload;
+import tech.mogami.commons.payment.PaymentRequired;
+import tech.mogami.java.client.X402V2Client;
 
-import static io.netty.handler.codec.http.HttpResponseStatus.PAYMENT_REQUIRED;
-import static tech.mogami.commons.constant.X402Constants.X402_X_PAYMENT_HEADER;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 /**
  * Spring Boot server example.
@@ -42,67 +48,66 @@ public class Application {
     @Bean
     CommandLineRunner init() {
         return args -> {
+            final OkHttpClient okHttpClient = new OkHttpClient();
             final String tipUrl = StringUtils.firstNonBlank(System.getenv("TIP_URL"), "http://localhost:4021/tip");
             final String tipPrivateKey = System.getenv("TIP_PRIVATE_KEY");
+            PaymentRequired paymentRequired = null;
 
             if (StringUtils.isNotBlank(tipPrivateKey)) {
-                final String tipAddress = Credentials.create(tipPrivateKey).getAddress();
+                // final String tipAddress = Credentials.create(tipPrivateKey).getAddress();
                 System.out.println("✅ Environment variables are set - Running a payment on base on the /tip endpoint");
-                RestTemplate restTemplate = new RestTemplate();
 
-                // Call the /tip endpoint which requires a payment
-                try {
-                    restTemplate.getForEntity(tipUrl, String.class);
-                } catch (HttpClientErrorException e) {
-                    if (e.getStatusCode().value() == PAYMENT_REQUIRED.code()) {
-                        // Retrieve the payment required from the response body.
-                        var paymentRequired = X402PaymentHelper.getPaymentRequiredFromBody(e.getResponseBodyAsString())
-                                .orElseThrow(() -> new IllegalStateException("Payment requirements not found in response"));
-
-                        // Generate a payment payload (without a signature) from the payment requirements.
-                        var paymentPayload = X402PaymentHelper.getPayloadFromPaymentRequirements(
-                                null,
-                                tipAddress,
-                                paymentRequired.accepts().getFirst());
-
-                        // Sign the payment payload.
-                        var signedPayload = X402PaymentHelper.getSignedPayload(
-                                Credentials.create(tipPrivateKey),
-                                paymentRequired.accepts().getFirst(),
-                                paymentPayload);
-
-                        // Perform the request with the signed payment payload in the header.
-                        HttpHeaders headers = new HttpHeaders();
-                        headers.set(X402_X_PAYMENT_HEADER, X402PaymentHelper.getPayloadHeader(signedPayload));
-                        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-                        try {
-                            ResponseEntity<String> response = restTemplate.exchange(
-                                    tipUrl,
-                                    HttpMethod.GET,
-                                    entity,
-                                    String.class
-                            );
-
-                            if (!response.getStatusCode().is2xxSuccessful()) {
-                                System.out.println("⚠️ Unexpected status code after payment: " + response.getStatusCode());
-                            } else {
-                                System.out.println("✅ Status: " + response.getStatusCode());
-                                System.out.println("✅ Body: " + response.getBody());
-                                signedPayload.getNonce().ifPresent(nonce -> System.out.println("✅ Payment nonce: " + nonce));
-                            }
-                        } catch (HttpClientErrorException httpClientErrorException) {
-                            System.out.println("⚠️ HTTP error: " + httpClientErrorException.getStatusCode());
-                            System.out.println("⚠️ Response body:");
-                            System.out.println(httpClientErrorException.getResponseBodyAsString());
-                        }
-                    }
+                // We make the initial request without any payment =====================================================
+                try (Response initialResponse = okHttpClient.newCall(new Request.Builder().url(tipUrl).get().build()).execute()) {
+                    // Extracting the payments requirements from the header
+                    paymentRequired = X402V2Client.extractPaymentRequired(getHeaders(initialResponse))
+                            .orElseThrow(() -> new IllegalStateException("PaymentRequired should be present"));
+                } catch (IOException e) {
+                    System.err.println("IOException during HTTP request to " + tipUrl + ": " + e.getMessage());
+                    System.exit(-1);
                 }
 
+                // We create a payment with a valid PaymentPayload =====================================================
+                assertThat(paymentRequired).isNotNull();
+                assertThat(paymentRequired.accepts()).isNotEmpty();
+                final PaymentPayload payload = X402V2Client.buildPaymentPayload(
+                        paymentRequired,
+                        paymentRequired.accepts().getFirst(),
+                        Credentials.create(tipPrivateKey)
+                );
 
+                // We call the protected resource with the payment =====================================================
+                try (Response paidResponse = okHttpClient.newCall(new Request.Builder().url(tipUrl).get()
+                        .headers(Headers.of(X402V2Client.buildPaymentHeaders(payload)))
+                        .build()).execute()) {
+
+                    final Optional<SettlementResponse> settlementResponse = X402V2Client.extractSettlementResponse(getHeaders(paidResponse));
+                    if (settlementResponse.isPresent()) {
+                        System.out.println("✅ Settlement response received: " + settlementResponse.get());
+                    } else {
+                        fail("No settlement response found in the paid request headers.");
+                    }
+
+                } catch (IOException e) {
+                    System.err.println("IOException during HTTP request to " + tipUrl + ": " + e.getMessage());
+                    System.exit(-1);
+                }
             }
 
         };
+    }
+
+    /**
+     * Extract headers from an OkHttp Response as a Map.
+     *
+     * @param response the OkHttp Response
+     * @return a Map of header names to their first value
+     */
+    private Map<String, String> getHeaders(final Response response) {
+        return response.headers().toMultimap()
+                .entrySet().stream()
+                .filter(e -> !e.getValue().isEmpty())
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getFirst()));
     }
 
 }
