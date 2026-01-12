@@ -67,7 +67,7 @@ public class IntegrationTest {
         HttpHeaders headers = new HttpHeaders();
         headers.add(X402_PAYMENT_SIGNATURE_HEADER, paymentHeaders.get(X402_PAYMENT_SIGNATURE_HEADER));
 
-        // Calling the API with the payment header.
+        // Calling the API with the payment header ========================================================
         result = mockMvc.perform(get("/weather").headers(headers)).andReturn();
 
         // Checking the response =======================================================================================
