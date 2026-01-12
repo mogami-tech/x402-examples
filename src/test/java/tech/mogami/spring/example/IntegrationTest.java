@@ -66,9 +66,6 @@ public class IntegrationTest {
         final Map<String, String> paymentHeaders = X402V2Client.buildPaymentHeaders(paymentPayload);
         HttpHeaders headers = new HttpHeaders();
         headers.add(X402_PAYMENT_SIGNATURE_HEADER, paymentHeaders.get(X402_PAYMENT_SIGNATURE_HEADER));
-        if (paymentPayload.getNonce().isPresent()) {
-            System.out.println("=> Payment nonce: " + paymentPayload.getNonce());
-        }
 
         // Calling the API with the payment header.
         result = mockMvc.perform(get("/weather").headers(headers)).andReturn();
@@ -81,6 +78,8 @@ public class IntegrationTest {
                     assertThat(settlementResponse.errorReason()).isBlank();
                     assertThat(settlementResponse.payer()).isEqualToIgnoringCase(TEST_CLIENT_WALLET_ADDRESS_1);
                     assertThat(settlementResponse.network()).isEqualTo(BASE_SEPOLIA.networkId());
+                    paymentPayload.getNonce().ifPresent(nonce -> System.out.println("=> Payment nonce: " + nonce));
+                    System.out.println("=> Payment settled successfully: " + settlementResponse);
                 });
         // Check that the payment was successful.
         assertEquals(200, result.getResponse().getStatus(),
