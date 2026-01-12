@@ -11,9 +11,9 @@ import tech.mogami.spring.annotation.X402PayUSDC;
 public class TipController {
 
     @X402PayUSDC(
-            amount = "0.01", // 0.0 1 USDC
+            amount = "0.01", // 0.01 USDC
             payTo = "0x2306e12F56e45E698bFAfa9c5E7D4e77cDEb4d06",
-            network = "base"
+            network = "eip155:8453"
     )
     @GetMapping("/tip")
     @Operation(summary = "Send a 0.1 USDC tip to Mogami on base mainnet")
