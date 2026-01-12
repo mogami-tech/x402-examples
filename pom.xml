@@ -6,7 +6,7 @@
     <!-- Project information ======================================================================================= -->
     <groupId>tech.mogami.spring</groupId>
     <artifactId>x402-example-server</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Mogami x402 examples - x402 v2</name>
     <description>Learn x402 through real-world demos of paywalled endpoints and instant payment flows</description>
