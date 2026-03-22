@@ -33,7 +33,7 @@
         <mogami.spring-boot-starter.version>2.0.1-SNAPSHOT</mogami.spring-boot-starter.version>
 
         <!-- Spring -->
-        <spring-boot.version>3.5.11</spring-boot.version>
+        <spring-boot.version>3.5.12</spring-boot.version>
         <springdoc.version>2.8.16</springdoc.version>
 
         <!-- Other -->
