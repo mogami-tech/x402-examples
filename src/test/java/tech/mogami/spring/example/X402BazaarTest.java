@@ -13,7 +13,6 @@ import tech.mogami.commons.constant.HttpMethod;
 import tech.mogami.java.client.X402V2Client;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,9 +77,8 @@ public class X402BazaarTest {
 
     private static Map<String, String> getHeaders(MockHttpServletResponse response) {
         return response.getHeaderNames().stream()
-                .map(name -> Map.entry(name, Objects.requireNonNull(response.getHeader(name))))
-                .filter(entry -> entry.getValue() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .filter(name -> response.getHeader(name) != null)
+                .collect(Collectors.toMap(name -> name, response::getHeader));
     }
 
 }

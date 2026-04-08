@@ -49,8 +49,7 @@ public class BazaarExample {
     )
     @PostMapping("/bazaar")
     @Operation(summary = "Send a digital memo — a bazaar-enabled x402 endpoint example")
-    @SuppressWarnings("unused")
-    public final String sendMemo(@RequestBody final String body) {
+    public final String sendMemo(@RequestBody final String ignoredBody) {
         return "{\"success\":true,\"id\":\"memo-uuid\","
                 + "\"memo\":{\"id\":\"agent-memo-v1\",\"name\":\"Agent Digital Memo\"},"
                 + "\"delivery\":{\"status\":\"created\"}}";
